@@ -22,19 +22,19 @@
             <div class="div_formulario_izquierda">
                 <div class="form-inputs">
                     <label>Nombres</label>
-                    <input type="text" id="txt_nombres" class="input_signup" placeholder="Nombres" onkeypress="return ValidarEntradaLetras(event);">
+                    <input type="text" id="txt_nombres" class="input_signup" placeholder="Nombres" onkeypress="return ValidarEntradaLetras(event);" value="Daniel">
                     <label>Apellidos</label>
-                    <input type="text" id="txt_apellidos" class="input_signup" placeholder="Apellidos" onkeypress="return ValidarEntradaLetras(event);">
+                    <input type="text" id="txt_apellidos" class="input_signup" placeholder="Apellidos" onkeypress="return ValidarEntradaLetras(event);" value="Guarchaj">
                     <label>Direccion</label>
-                    <input type="text" id="txt_direccion" class="input_signup" placeholder="Direccion">
+                    <input type="text" id="txt_direccion" class="input_signup" placeholder="Direccion" value="Ciudad">
                     <label>Telefono</label>
-                    <input type="text" id="txt_telefono" class="input_signup" placeholder="Telefono" onkeypress="return ValidarEntradaEntero(event);" maxlength="8">
+                    <input type="text" id="txt_telefono" class="input_signup" placeholder="Telefono" onkeypress="return ValidarEntradaEntero(event);" maxlength="8" value="52525252">
                     <label>Correo</label>
-                    <input type="text" id="txt_correo" class="input_signup" placeholder="Correo" onkeypress="return ValidarEntradaCorreo(event);">
+                    <input type="text" id="txt_correo" class="input_signup" placeholder="Correo" onkeypress="return ValidarEntradaCorreo(event);" value="gtdanniel@gmail.com">
                     <label>Contraseña</label>
-                    <input type="password" id="txt_password" class="input_signup" placeholder="********">
+                    <input type="password" id="txt_password" class="input_signup" placeholder="********" value="123Asd...">
                     <label>Confirmar Contraseña</label>
-                    <input type="password" id="txt_confirmar_password" class="input_signup" placeholder="********">
+                    <input type="password" id="txt_confirmar_password" class="input_signup" placeholder="********" value="123Asd...">
                     <div id="div_radio_genero">
                         <label>Genero</label>
                         <input type="radio" value="1" name="radio_genero">
@@ -47,13 +47,19 @@
             <div class="div_formulario_derecha">
                 <div class="form-inputs">
                     <label>Fecha de Nacimiento</label>
-                    <input type="text" id="txt_nacimiento" class="input_signup" placeholder="Dia/Mes/Año" maxlength="10" onkeypress="return ValidarEntradaFecha(event);" onblur="ValidarEdad(this.value);">
+                    <input type="text" id="txt_nacimiento" class="input_signup" placeholder="Dia/Mes/Año" maxlength="10" onkeypress="return ValidarEntradaFecha(event);" onblur="ValidarEdad(this.value);" value="10/4/1993">
                     <label>CUI</label>
-                    <input type="text" id="txt_cui" class="input_signup" placeholder="12344567890123" onkeypress="return ValidarEntradaEntero(event);" onblur="ValidarCui(this.value);" maxlength="13">
+                    <input type="text" id="txt_cui" class="input_signup" placeholder="12344567890123" onkeypress="return ValidarEntradaEntero(event);" onblur="ValidarCui(this.value);" maxlength="13" value="1234657890123">
                     <label>Departamento</label>
-                    <select id="slc_departamento" class="input_signup"></select>
+                    <select id="slc_departamento" class="input_signup">
+                        {% for departamento in data %}
+                            <option value="{{ departamento.id }}"> {{ departamento }}</option>
+                        {% endfor %}
+                    </select>
                     <label>Municipio</label>
-                    <select id="slc_municipio" class="input_signup"></select>
+                    <select id="slc_municipio" class="input_signup">
+
+                    </select>
                     <div class="div_autorizacion" id="div_autorizacion_menor">
                         <input type="radio" value="1" name="radio_autorizacion_menores">
                         <label for="radio_autorizacion_menores">Tus padres, tutores y/o protutores tienen conocimiento del uso y autorizacion de la navegacion y utilizacion de los servicios</label>
@@ -69,7 +75,6 @@
     </div>
     <script src="{% static 'lib/jquery.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/script_validaciones.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/script_municipios.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/script_admin_signup.js' %}"></script>
 </body>
 

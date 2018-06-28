@@ -14,47 +14,6 @@ var administrador = { //Protoripo administrador que sirve para crear nuevos admi
     municipio: ''
 };
 
-CargarDepartamentos(); //varga los departamentos al html
-VerMunicipios(); //inserta los municipios del primer departamento al select de municipios
-ObtenerAdministradores(); //se cargan administradores si hay
-
-function ObtenerAdministradores() { //se cargan administradores desde localStorage
-    var retrievedObject = localStorage.getItem('administradores');
-    if (retrievedObject != null) {
-        Administradores = JSON.parse(retrievedObject);
-    }
-}
-
-function GuardarAdministrador() { //se guardan los administradores en el localStorage
-    localStorage.setItem('administradores', JSON.stringify(Administradores));
-}
-
-function CargarDepartamentos() { //Funcion que no recibe arametros e inserta los departamentos al html
-    var departamentos_html = '';
-    $.each(Departamentos, function(index, departamento) {
-        departamentos_html += `<option value='${departamento.id}'>${departamento.nombre}</option>`;
-    });
-    $('#slc_departamento').html(departamentos_html);
-}
-
-function VerMunicipios() { //Funcion que no recibe parametros e inserta los municipios corresponidentes al departamento seleccionado
-    var municipios_html = '';
-    $.each(Municipios, function(i, municipio) {
-        if ($('#slc_departamento').val() == municipio.departamento_id) {
-            municipios_html += `<option value='${municipio.id}'>${municipio.nombre}</option>`;
-        }
-    });
-    $('#slc_municipio').html(municipios_html);
-}
-
-function CorreoDuplicado(_correo) {
-    var encontrado = false;
-    $.each(Administradores, function(index, valor) {
-        if (valor.correo == _correo) encontrado = true;
-    })
-    return encontrado;
-}
-
 function ValidarRegistroNuevo() { //se validan los campos del nuevo registro y se inserta si no hay error si hay error se notifica al usuario
     var error = false;
     var mensaje = '';
@@ -140,8 +99,18 @@ function ValidarRegistroNuevo() { //se validan los campos del nuevo registro y s
         //AJAX
         $.ajax({
             url: 'http://127.0.0.1:8000/admins/registro/nuevo_admin/',
-            type: 'get',
-            data: {nuevo_administrador: nuevo_administrador, csrfmiddlewaretoken: $('input:hidden[name=csrfmiddlewaretoken]').val()},
+            type: 'post',
+            //data: {nuevo_administrador: nuevo_administrador, csrfmiddlewaretoken: $('input:hidden[name=csrfmiddlewaretoken]').val()},
+            data: { nombres: $('#txt_nombres').val(),
+                    apellidos: $('#txt_apellidos').val(),
+                    direccion: $('#txt_direccion').val(),
+                    telefono: $('#txt_telefono').val(),
+                    correo: $('#txt_correo').val(),
+                    password: $('#txt_password').val(),
+                    genero: $('input:radio[name=radio_genero]:checked').val(),
+                    nacimiento: $('#txt_nacimiento').val(),
+                    cui: $('#txt_cui').val(),
+                    municipio: $('#slc_municipio').val(), csrfmiddlewaretoken: $('input:hidden[name=csrfmiddlewaretoken]').val()},
             datatype: 'json',
             success: function (response) {
                 alert(response)
@@ -173,7 +142,27 @@ $(function() {
         ValidarRegistroNuevo();
     });
     $('#slc_departamento').on('change', function() { //funcion que se ejecuta en el evento change del select del departamento
-        VerMunicipios(); //llama a la funcion ver municipios cada que el valor del select departamento cambia
+        $.ajax({
+            url: 'http://127.0.0.1:8000/admins/registro/cargar_municipios/',
+            type: 'post',
+            data: {departamento_id: $('#slc_departamento').val(), csrfmiddlewaretoken: $('input:hidden[name=csrfmiddlewaretoken]').val()},
+            datatype: 'json',
+            success: function (response) {
+                $('#slc_municipio').html(response);
+                switch (response.val) {
+                    case 0:
+                        alert('Internal Server Error');
+                        break;
+                    case 1:
+                        alert('Municipios cargados');
+                        break;
+                    default:break;
+                }
+            },
+            error: function (error) {
+                alert('Error cargando municipios' + error)
+            }
+        });
     });
     /*$("#txt_correo").blur(function() {
         var correo = $('#txt_correo').val();
