@@ -1,0 +1,22 @@
+{% extends 'admins/base_sign.html' %}
+
+{% block content %}
+    <div class="div_contenedor_principal" id="div_principal_login">
+        <div class="div_encabezado">
+            <h3>Bienvenido</h3>
+        </div>
+        <div class="div_titulo_pagina">
+            <h1>Inicio de sesion - Administrador</h1>
+        </div>
+        <div class="div_formulario_login">
+            <div class="form-login">
+                <label>Correo</label>
+                <input type="text" id="txt_correo_login" class="input_login" placeholder="alguien@ejemplo.com" onkeypress="return ValidarEntradaCorreo(event);">
+                <label>Contraseña</label>
+                <input type="password" id="txt_password_login" class="input_login" placeholder="********">
+                <a href="signup.html">Nuevo usuario? Registrate aqui</a>
+                <input type="button" id="btn_iniciar_login" value="Iniciar" class="input_login">
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -38,6 +38,18 @@ function CargarMunicipios(){
     });
 }
 
+function RedirigirAdminLogin(){
+    $.ajax({
+        url: 'http://127.0.0.1:8000/admins/login/',
+        type: 'post',
+        data: {csrfmiddlewaretoken: $('input:hidden[name=csrfmiddlewaretoken]').val()},
+        datatype: 'json',
+        error: function (error) {
+            alert('Error redirigiendo a login: ' + error)
+        }
+    });
+}
+
 function ValidarRegistroNuevo() { //se validan los campos del nuevo registro y se inserta si no hay error si hay error se notifica al usuario
     var error = false;
     var mensaje = '';
@@ -130,21 +142,20 @@ function ValidarRegistroNuevo() { //se validan los campos del nuevo registro y s
             datatype: 'json',
             success: function (response) {
                 alert(response)
+                RedirigirAdminLogin();
                 switch (response.val) {
-                    case 0:
+                    case 500:
                         alert('Internal Server Error');
                         break;
-                    case 1:
-                        alert('Administrador agregado');
-                        break;
-                    case 2:
-                        alert('Correo repetido');
+                    case 201:
+                        alert('Administrador registrado, inicia sesión con tu nueva cuenta.')
+                        RedirigirAdminLogin();
                         break;
                     default:
                 }
             },
             error: function (error) {
-                alert('Error agregando' + error)
+                alert('Error agregando administrador: ' + error.val)
             }
         });
 
@@ -163,8 +174,5 @@ $(function() {
     $('#slc_departamento').on('change', function() { //funcion que se ejecuta en el evento change del select del departamento
         CargarMunicipios();
     });
-    /*$("#txt_correo").blur(function() {
-        var correo = $('#txt_correo').val();
-        if (CorreoDuplicado(correo)) alert('El correo ' + correo + ' ya esta registrada con otra cuenta');
-    });*/
+
 });

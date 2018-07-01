@@ -1,19 +1,24 @@
-from django.shortcuts import render, render_to_response
-from django.http import HttpResponse
+from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from django.http import JsonResponse
 from admins.models import Departamento
 from admins.models import Municipio
 from admins.models import Administrador
-from django.utils.dateparse import parse_date
+
 import json
 
 # Create your views here.
+
+
 def registro(request):
     departamentos = Departamento.objects.all()
     return render(request, 'admins/admins_registro.html', {'data': departamentos})
 
+
+def login(request):
+    return render(request, 'admins/admins_login.html')
+
+
 def nuevo_admin(request):
-#    token = request.GET.get('csrfmiddlewaretoken', None)
     admin_data = request.POST.get('nuevo_admin', None)
     admin_data = json.loads(admin_data)
     municipio = obtener_municipio(admin_data["municipio"])
@@ -29,7 +34,7 @@ def nuevo_admin(request):
                     cui=admin_data["cui"],
                     municipio=municipio
                   ).save()
-    return JsonResponse("Administrador agregado!", safe=False)
+    return JsonResponse('Administrador agregado, inicia sesión con tu nueva cuenta.', safe=False)
 
 
 def obtener_municipio(mun_id):
