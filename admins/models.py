@@ -17,7 +17,7 @@ class Departamento(models.Model):
 
 class Municipio(models.Model):
     nombre = models.CharField(max_length=150)
-    Departamento = models.ForeignKey(Departamento, on_delete=models.CASCADE)
+    departamento = models.ForeignKey(Departamento, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.nombre
@@ -35,4 +35,4 @@ class Administrador(models.Model):
     municipio = models.ForeignKey(Municipio, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.nombre + ' ' + self.apellidos
+        return self.nombres + ' ' + self.apellidos

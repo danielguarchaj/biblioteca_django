@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from admins.models import Departamento
 from admins.models import Municipio
 from admins.models import Administrador
+from django.utils.dateparse import parse_date
 import json
 
 # Create your views here.
@@ -13,27 +14,28 @@ def registro(request):
 
 def nuevo_admin(request):
 #    token = request.GET.get('csrfmiddlewaretoken', None)
-    admin_data = request.POST.get('nombres', None)
-    print(admin_data)
-    #admin_data = json.loads(admin_data)
-    #print(admin_data)
+    admin_data = request.POST.get('nuevo_admin', None)
+    admin_data = json.loads(admin_data)
+    municipio = obtener_municipio(admin_data["municipio"])
     Administrador(
-                    nombres=admin_data
+                    nombres=admin_data["nombres"],
+                    apellidos=admin_data["apellidos"],
+                    direccion=admin_data["direccion"],
+                    telefono=admin_data["telefono"],
+                    correo=admin_data["correo"],
+                    password=admin_data["password"],
+                    genero=admin_data["genero"],
+                    nacimiento=admin_data["nacimiento"],
+                    cui=admin_data["cui"],
+                    municipio=municipio
                   ).save()
-    return JsonResponse(admin_data, safe=False)
+    return JsonResponse("Administrador agregado!", safe=False)
 
-"""
-                    nombres = admin_data.nombres,
-                    apellidos = admin_data.apellidos,
-                    direccion = admin_data.direccion,
-                    telefono = admin_data.telefono,
-                    correo = admin_data.correo,
-                    password = admin_data.password,
-                    genero = admin_data.genero,
-                    nacimiento = admin_data.nacimiento,
-                    cui = admin_data.cui,
-                    municipio = admin_data.municipio
-                    """
+
+def obtener_municipio(mun_id):
+    municipio = Municipio.objects.filter(id=mun_id)
+    return municipio[0]
+
 
 def cargar_municipios(request):
     departamento_id = request.POST.get('departamento_id', None)

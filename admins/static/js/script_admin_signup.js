@@ -14,6 +14,30 @@ var administrador = { //Protoripo administrador que sirve para crear nuevos admi
     municipio: ''
 };
 
+function CargarMunicipios(){
+    $.ajax({
+        url: 'http://127.0.0.1:8000/admins/registro/cargar_municipios/',
+        type: 'post',
+        data: {departamento_id: $('#slc_departamento').val(), csrfmiddlewaretoken: $('input:hidden[name=csrfmiddlewaretoken]').val()},
+        datatype: 'json',
+        success: function (response) {
+            $('#slc_municipio').html(response);
+            switch (response.val) {
+                case 0:
+                    alert('Internal Server Error');
+                    break;
+                case 1:
+                    alert('Municipios cargados');
+                    break;
+                default:break;
+            }
+        },
+        error: function (error) {
+            alert('Error cargando municipios' + error)
+        }
+    });
+}
+
 function ValidarRegistroNuevo() { //se validan los campos del nuevo registro y se inserta si no hay error si hay error se notifica al usuario
     var error = false;
     var mensaje = '';
@@ -85,7 +109,8 @@ function ValidarRegistroNuevo() { //se validan los campos del nuevo registro y s
 
     if (!error) {
         var nuevo_administrador = Object.create(administrador);
-        nuevo_administrador.id = Administradores.length + 1;
+        var fecha = $('#txt_nacimiento').val();
+        fecha = fecha.split('/');
         nuevo_administrador.nombres = $('#txt_nombres').val();
         nuevo_administrador.apellidos = $('#txt_apellidos').val();
         nuevo_administrador.direccion = $('#txt_direccion').val();
@@ -93,7 +118,7 @@ function ValidarRegistroNuevo() { //se validan los campos del nuevo registro y s
         nuevo_administrador.correo = $('#txt_correo').val();
         nuevo_administrador.password = $('#txt_password').val();
         nuevo_administrador.genero = $('input:radio[name=radio_genero]:checked').val();
-        nuevo_administrador.nacimiento = $('#txt_nacimiento').val();
+        nuevo_administrador.nacimiento = fecha[2] + "-" + fecha[1] + "-" + fecha[0];
         nuevo_administrador.cui = $('#txt_cui').val();
         nuevo_administrador.municipio = $('#slc_municipio').val();
         //AJAX
@@ -101,16 +126,7 @@ function ValidarRegistroNuevo() { //se validan los campos del nuevo registro y s
             url: 'http://127.0.0.1:8000/admins/registro/nuevo_admin/',
             type: 'post',
             //data: {nuevo_administrador: nuevo_administrador, csrfmiddlewaretoken: $('input:hidden[name=csrfmiddlewaretoken]').val()},
-            data: { nombres: $('#txt_nombres').val(),
-                    apellidos: $('#txt_apellidos').val(),
-                    direccion: $('#txt_direccion').val(),
-                    telefono: $('#txt_telefono').val(),
-                    correo: $('#txt_correo').val(),
-                    password: $('#txt_password').val(),
-                    genero: $('input:radio[name=radio_genero]:checked').val(),
-                    nacimiento: $('#txt_nacimiento').val(),
-                    cui: $('#txt_cui').val(),
-                    municipio: $('#slc_municipio').val(), csrfmiddlewaretoken: $('input:hidden[name=csrfmiddlewaretoken]').val()},
+            data: { nuevo_admin: JSON.stringify(nuevo_administrador), csrfmiddlewaretoken: $('input:hidden[name=csrfmiddlewaretoken]').val()},
             datatype: 'json',
             success: function (response) {
                 alert(response)
@@ -138,31 +154,14 @@ function ValidarRegistroNuevo() { //se validan los campos del nuevo registro y s
 }
 
 $(function() {
+
+    CargarMunicipios();
+
     $('#btn_registrar').click(function() { //boton registrar que llama la funcion para validar registro
         ValidarRegistroNuevo();
     });
     $('#slc_departamento').on('change', function() { //funcion que se ejecuta en el evento change del select del departamento
-        $.ajax({
-            url: 'http://127.0.0.1:8000/admins/registro/cargar_municipios/',
-            type: 'post',
-            data: {departamento_id: $('#slc_departamento').val(), csrfmiddlewaretoken: $('input:hidden[name=csrfmiddlewaretoken]').val()},
-            datatype: 'json',
-            success: function (response) {
-                $('#slc_municipio').html(response);
-                switch (response.val) {
-                    case 0:
-                        alert('Internal Server Error');
-                        break;
-                    case 1:
-                        alert('Municipios cargados');
-                        break;
-                    default:break;
-                }
-            },
-            error: function (error) {
-                alert('Error cargando municipios' + error)
-            }
-        });
+        CargarMunicipios();
     });
     /*$("#txt_correo").blur(function() {
         var correo = $('#txt_correo').val();
