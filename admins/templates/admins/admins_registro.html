@@ -15,22 +15,22 @@
             <div class="div_formulario_izquierda">
                 <div class="form-inputs">
                     <label>Nombres</label>
-                    <input type="text" id="txt_nombres" class="input_signup" placeholder="Nombres" onkeypress="return ValidarEntradaLetras(event);" value="">
+                    <input type="text" id="txt_nombres" class="input_signup" placeholder="Nombres" onkeypress="return ValidarEntradaLetras(event);" value="Daniel">
                     <label>Apellidos</label>
-                    <input type="text" id="txt_apellidos" class="input_signup" placeholder="Apellidos" onkeypress="return ValidarEntradaLetras(event);" value="">
+                    <input type="text" id="txt_apellidos" class="input_signup" placeholder="Apellidos" onkeypress="return ValidarEntradaLetras(event);" value="Guarchaj">
                     <label>Direccion</label>
                     <input type="text" id="txt_direccion" class="input_signup" placeholder="Direccion" value="Ciudad">
                     <label>Telefono</label>
-                    <input type="text" id="txt_telefono" class="input_signup" placeholder="Telefono" onkeypress="return ValidarEntradaEntero(event);" maxlength="8" value="">
+                    <input type="text" id="txt_telefono" class="input_signup" placeholder="Telefono" onkeypress="return ValidarEntradaEntero(event);" maxlength="8" value="55555555">
                     <label>Correo</label>
-                    <input type="text" id="txt_correo" class="input_signup" placeholder="Correo" onkeypress="return ValidarEntradaCorreo(event);" value="">
+                    <input type="text" id="txt_correo" class="input_signup" placeholder="Correo" onkeypress="return ValidarEntradaCorreo(event);" value="gtdanniel@gmail.com">
                     <label>Contraseña</label>
-                    <input type="password" id="txt_password" class="input_signup" placeholder="********" value="">
+                    <input type="password" id="txt_password" class="input_signup" placeholder="********" value="123Asd...">
                     <label>Confirmar Contraseña</label>
-                    <input type="password" id="txt_confirmar_password" class="input_signup" placeholder="********" value="">
+                    <input type="password" id="txt_confirmar_password" class="input_signup" placeholder="********" value="123Asd...">
                     <div id="div_radio_genero">
                         <label>Genero</label>
-                        <input type="radio" value="1" name="radio_genero">
+                        <input type="radio" value="1" name="radio_genero" checked>
                         <label for="radio_masculino">Masculino</label>
                         <input type="radio" value="0" name="radio_genero">
                         <label for="radio_genero">Femenino</label>
@@ -40,9 +40,9 @@
             <div class="div_formulario_derecha">
                 <div class="form-inputs">
                     <label>Fecha de Nacimiento</label>
-                    <input type="text" id="txt_nacimiento" class="input_signup" placeholder="Dia/Mes/Año" maxlength="10" onkeypress="return ValidarEntradaFecha(event);" onblur="ValidarEdad(this.value);" value="">
+                    <input type="text" id="txt_nacimiento" class="input_signup" placeholder="Dia/Mes/Año" maxlength="10" onkeypress="return ValidarEntradaFecha(event);" onblur="ValidarEdad(this.value);" value="10/4/1993">
                     <label>CUI</label>
-                    <input type="text" id="txt_cui" class="input_signup" placeholder="12344567890123" onkeypress="return ValidarEntradaEntero(event);" onblur="ValidarCui(this.value);" maxlength="13" value="">
+                    <input type="text" id="txt_cui" class="input_signup" placeholder="12344567890123" onkeypress="return ValidarEntradaEntero(event);" onblur="ValidarCui(this.value);" maxlength="13" value="1234567890123">
                     <label>Departamento</label>
                     <select id="slc_departamento" class="input_signup">
                         {% for departamento in data %}
@@ -58,7 +58,7 @@
                         <label for="radio_autorizacion_menores">Tus padres, tutores y/o protutores tienen conocimiento del uso y autorizacion de la navegacion y utilizacion de los servicios</label>
                     </div>
                     <div class="div_autorizacion">
-                        <input type="checkbox" id="chk_terminos_condiciones">
+                        <input type="checkbox" id="chk_terminos_condiciones" checked>
                         <a href="terminos_condiciones.html">Terminos y condiciones de uso</a>
                     </div>
                     <input type="button" id="btn_registrar" value="Registrarme">

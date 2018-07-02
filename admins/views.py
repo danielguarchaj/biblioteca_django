@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponse, HttpResponseRedirect
+from django.shortcuts import HttpResponse, render, redirect
 from django.http import JsonResponse
 from admins.models import Departamento
 from admins.models import Municipio
@@ -18,6 +18,18 @@ def login(request):
     return render(request, 'admins/admins_login.html')
 
 
+def validar_login(request):
+    login_data = json.loads(request.POST.get('data', None))
+    matches = Administrador.objects.filter(correo=login_data['correo'], password=login_data['password']).exists()
+    respuesta = {
+        'val': ''
+    }
+    if matches:
+        respuesta['val'] = '1'
+    else:
+        respuesta['val'] = '0'
+    return JsonResponse(respuesta)
+
 def nuevo_admin(request):
     admin_data = request.POST.get('nuevo_admin', None)
     admin_data = json.loads(admin_data)
@@ -34,7 +46,7 @@ def nuevo_admin(request):
                     cui=admin_data["cui"],
                     municipio=municipio
                   ).save()
-    return JsonResponse('Administrador agregado, inicia sesión con tu nueva cuenta.', safe=False)
+    return JsonResponse('Success from server', safe=False)
 
 
 def obtener_municipio(mun_id):

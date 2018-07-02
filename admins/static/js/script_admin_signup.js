@@ -1,5 +1,3 @@
-var Administradores = []; //array Administradores que contendra todos los administradores ingresados por el usuario en localStorage
-
 var administrador = { //Protoripo administrador que sirve para crear nuevos administradores
     id: '',
     nombres: '',
@@ -33,7 +31,7 @@ function CargarMunicipios(){
             }
         },
         error: function (error) {
-            alert('Error cargando municipios' + error)
+            console.log('Error cargando municipios' + error)
         }
     });
 }
@@ -44,8 +42,11 @@ function RedirigirAdminLogin(){
         type: 'post',
         data: {csrfmiddlewaretoken: $('input:hidden[name=csrfmiddlewaretoken]').val()},
         datatype: 'json',
+        success: function (response) {
+            window.location.href = 'http://127.0.0.1:8000/admins/login/';
+        },
         error: function (error) {
-            alert('Error redirigiendo a login: ' + error)
+            console.log('Error redirigiendo a login: ' + error)
         }
     });
 }
@@ -137,22 +138,11 @@ function ValidarRegistroNuevo() { //se validan los campos del nuevo registro y s
         $.ajax({
             url: 'http://127.0.0.1:8000/admins/registro/nuevo_admin/',
             type: 'post',
-            //data: {nuevo_administrador: nuevo_administrador, csrfmiddlewaretoken: $('input:hidden[name=csrfmiddlewaretoken]').val()},
             data: { nuevo_admin: JSON.stringify(nuevo_administrador), csrfmiddlewaretoken: $('input:hidden[name=csrfmiddlewaretoken]').val()},
             datatype: 'json',
             success: function (response) {
                 alert(response)
-                RedirigirAdminLogin();
-                switch (response.val) {
-                    case 500:
-                        alert('Internal Server Error');
-                        break;
-                    case 201:
-                        alert('Administrador registrado, inicia sesión con tu nueva cuenta.')
-                        RedirigirAdminLogin();
-                        break;
-                    default:
-                }
+                window.location.href = 'http://127.0.0.1:8000/admins/login/';
             },
             error: function (error) {
                 alert('Error agregando administrador: ' + error.val)

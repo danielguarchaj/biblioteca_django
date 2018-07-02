@@ -1,6 +1,8 @@
 {% extends 'admins/base_sign.html' %}
 
 {% block content %}
+    {% csrf_token %}
+    {{ form.as_p }}
     <div class="div_contenedor_principal" id="div_principal_login">
         <div class="div_encabezado">
             <h3>Bienvenido</h3>
@@ -8,6 +10,11 @@
         <div class="div_titulo_pagina">
             <h1>Inicio de sesion - Administrador</h1>
         </div>
+        {% if data %}
+            <div class="div_titulo_pagina">
+                <h3>Usuario {{ data }} creado</h3>
+            </div>
+        {% endif %}
         <div class="div_formulario_login">
             <div class="form-login">
                 <label>Correo</label>
